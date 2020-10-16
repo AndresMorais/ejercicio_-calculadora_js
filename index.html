@@ -14,7 +14,8 @@
 
     <table class="calculadora">
         <tr>
-            <td colspan="4"> <input id="resultado"></input></td>
+            <div id="cantidad1" style="text-align: center;"></div>
+            <td colspan="4"> <input id="resultado" readonly></input></td>
         </tr>
         <!-- <tr>
             <div id="cantidad1" style="text-align: center;"></div>
@@ -40,7 +41,7 @@
             <td> <button id="resta">-</button></td> 
         </tr>
         <tr>
-            <td> <button id="igual">=</button></td>
+            <td> <button id="igual" onclick="operacion_completa()">=</button></td>
             <td> <button id="borrar">C</button></td>
             <td> <button id="cero">0</button></td>
             <td> <button id="suma">+</button></td> 
@@ -55,6 +56,10 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
+        $('#borrar').click(function() {
+            $('#resultado').val("");      
+        })
+        
         crear_cadena('cero',0);
         crear_cadena('uno',1);
         crear_cadena('dos',2);
@@ -65,6 +70,11 @@
         crear_cadena('siete',7);
         crear_cadena('ocho',8);
         crear_cadena('nueve',9);
+
+        crear_operacion('division','/');
+        crear_operacion('multiplicacion','*');
+        crear_operacion('resta','-');
+        crear_operacion('suma','+');
     });
 
 </script>
@@ -75,12 +85,52 @@
 
 
 <script type="text/javascript">
-    function crear_cadena(control,valor){
+function crear_cadena(control,valor){
      $('#' + control).click(function() {
          var valor_actual=$('#resultado').val(); 
          cadena= valor_actual + valor;  
          $('#resultado').val(cadena);
      });   
+ }
+
+ function crear_operacion(control,operacion) {
+     $('#' + control).click(function() {
+         valor_actual=$('#resultado').val();
+         $('#cantidad1').text(operacion+" "+valor_actual);
+         $('#resultado').val('');
+         
+     });
+ }
+
+ function operacion_completa(){
+    valor_actual=$('#resultado').val();
+    cantidad_guardada=$('#cantidad1').text();
+    tipo=cantidad_guardada.split(" ");
+
+    switch(tipo[0]){
+        case '+':
+            resultado_final=parseInt(valor_actual) + parseInt(tipo[1]);
+            $('#resultado').val(resultado_final);
+            break;
+
+            case '-':
+            resultado_final=parseInt(valor_actual) - parseInt(tipo[1]);
+            $('#resultado').val(resultado_final);
+            break;
+
+            case '/':
+            resultado_final=parseInt(valor_actual) / parseInt(tipo[1]);
+            $('#resultado').val(resultado_final);
+            break;
+
+            case '*':
+            resultado_final=parseInt(valor_actual) * parseInt(tipo[1]);
+            $('#resultado').val(resultado_final);
+            break;
+
+    }
+
+     
  }
 </script>
 
